@@ -15,6 +15,10 @@ import unidecode
 from colorama import init
 from colorama import Fore, Back, Style
 
+#Test Videos
+#https://www.youtube.com/watch?v=WGU_4-5RaxU
+#https://www.youtube.com/watch?v=auLBLk4ibAk
+#https://www.youtube.com/watch?v=WGU_4-5RaxU,https://www.youtube.com/watch?v=auLBLk4ibAk
 
 class YouTag(object):
     def __init__(self):
@@ -24,9 +28,11 @@ class YouTag(object):
         self.validation = Validate()
 
     def get_video(self, url):
+
         if not self.validation.url_is_valid(url):
             sys.exit(Fore.RED + "Please provide a valid URL and try again")
         else:
+            print(Fore.GREEN + f"Beginning video download => {url}")
             subprocess.call(['youtube-dl', '--extract-audio', '--audio-format',
                              'mp3', url])
             song_name = subprocess.check_output(
@@ -36,8 +42,11 @@ class YouTag(object):
             self.get_song_data(ready_song_name)
 
     def get_videos(self, urls):
+        if not (",") in urls:
+            sys.exit(Fore.RED + "Youtube URLs must be separated by a comma. Please delimit videos by comma and try again.")
         song_list = urls.split(",")
 
+        print(Fore.BLUE + f"Found {len(song_list)} videos to be downloaded")
         for song in song_list:
             self.get_video(song)
 
@@ -78,7 +87,7 @@ class YouTag(object):
                 img = img.save(f'{self.image_name}.jpg')
                 self.tag_file(data)
                 self.remove_album_art()
-                sys.exit(Fore.GREEN + "Download and tag completed successfully!")
+                print(Fore.GREEN + "Download and tag completed successfully!")
             else:
                 sys.exit(Fore.YELLOW + "Deezer was unable to provide any data for the provided file. However, the song has still been downloaded")
 
