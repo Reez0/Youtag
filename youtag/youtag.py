@@ -53,6 +53,13 @@ class YouTag(object):
             secondDelPos = song_name.find(")")
             song_name = song_name.replace(
                 song_name[firstDelPos:secondDelPos+1], "")
+            if "(" or ")" in song_name:
+                firstDelPos = song_name.find("(")
+                secondDelPos = song_name.find(")")
+                song_name = song_name.replace(
+                    song_name[firstDelPos:secondDelPos+1], "")
+                return song_name.replace(" - ", " ")
+
             return song_name.replace(" - ", " ")
         else:
             sys.exit(Fore.YELLOW + """Sorry, only ascii characters are supported right now.""")
